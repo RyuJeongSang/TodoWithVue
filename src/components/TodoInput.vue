@@ -1,31 +1,59 @@
 <template>
   <div class="inputBox shadow">
-    <input type="text" v-model="newTodoItem" v-on:keyup.enter="addTodo" />
+    <input
+      type="text"
+      v-model="newTodoItem"
+      placeholder="What Not To Do?"
+      v-on:keyup.enter="addTodo"
+    />
     <span class="addContainer" v-on:click="addTodo">
       <font-awesome-icon class="addBtn" :icon="['far', 'plus-square']" />
     </span>
+
+    <alert-modal :show="showModal" @close="showModal = false">
+      <template #header>
+        <h3>경고</h3>
+      </template>
+      <template #body>
+        <span> 할 일을 입력해주세요. </span>
+      </template>
+      <template #footer>
+        <button @click="showModal = false">닫기</button>
+      </template>
+    </alert-modal>
   </div>
 </template>
 
 <script>
+import AlertModal from "./utils/AlertModal.vue";
+
 export default {
-  data: () => {
+  data: function () {
     return {
       newTodoItem: "",
+      showModal: false,
     };
   },
   methods: {
-    addTodo: () => {
-      console.log(this.newTodoItem); // 저장
-      localStorage.setItem(this.newTodoItem, this.newTodoItem);
-      this.clearInput(); //비워주기(초기화)
+    addTodo: function () {
+      if (this.newTodoItem !== "") {
+        let value = this.newTodoItem && this.newTodoItem.trim();
+        this.$emit("addTodo", value);
+        this.clearInput();
+      } else {
+        this.showModal = !this.showModal;
+      }
     },
-    clearInput: () => {
+    clearInput: function () {
       this.newTodoItem = "";
     },
   },
+  components: {
+    AlertModal,
+  },
 };
 </script>
+
 <style scoped>
 input:focus {
   outline: none;
