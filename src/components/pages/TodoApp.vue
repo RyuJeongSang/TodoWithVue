@@ -1,8 +1,8 @@
 <template>
   <div>
     <TodoHeader />
-    <TodoInput />
-    <TodoList />
+    <TodoInput v-on:addTodo="addTodo" />
+    <TodoList v-bind:propsdata="todoItems" @removeTodo="removeTodo"></TodoList>
     <TodoFooter />
   </div>
 </template>
@@ -14,7 +14,30 @@ import TodoList from "../templetes/TodoList.vue";
 import TodoFooter from "../templetes/TodoFooter.vue";
 
 export default {
-  name: "App",
+  data() {
+    return {
+      todoItems: [],
+    };
+  },
+  created() {
+    if (localStorage.length > 0) {
+      for (let i = 0; i < localStorage.length; i++) {
+        if (localStorage.key(i) != "loglevel:webpack-dev-server") {
+          this.todoItems.push(localStorage.key[i]);
+        }
+      }
+    }
+  },
+  methods: {
+    addTodo(todoItem) {
+      localStorage.setItem(todoItem, todoItem);
+      this.todoItems.push(todoItem);
+    },
+    removeTodo(todoItem, index) {
+      localStorage.removeItem(todoItem);
+      this.todoItems.splice(index, 1);
+    },
+  },
   components: {
     TodoHeader,
     TodoInput,

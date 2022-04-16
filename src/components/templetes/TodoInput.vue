@@ -41,7 +41,7 @@ export default {
         this.$emit("addTodo", value);
         this.clearInput();
       } else {
-        this.showModal = !this.showModal;
+        this.showModal = true;
       }
     },
     clearInput: function () {

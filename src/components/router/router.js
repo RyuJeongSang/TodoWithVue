@@ -3,10 +3,10 @@ import { createWebHistory, createRouter } from "vue-router";
 const routes = [
   {
     path: "/",
-    name: "Not To Do",
+    name: "Don't do it!",
     component: () => import("@/components/pages/TodoApp"),
     meta: {
-      title: "Not To Do",
+      title: "Don't do it!",
     },
   },
   {
@@ -22,7 +22,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  document.title = to.name;
+  document.title = to.meta.title;
   next();
 });
 
