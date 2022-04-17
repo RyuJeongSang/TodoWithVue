@@ -1,30 +1,16 @@
 <template>
-  <section>
-    <transition-group name="list" tag="ul">
-      <li
-        v-for="(todoItem, index) in propsdata"
-        v-bind:key="todoItem"
-        class="shadow"
-      >
-        <font-awesome-icon
-          class="checkBtn"
-          :icon="['fas', 'check']"
-          aria-hidden="true"
-        />
-        {{ todoItem }}
-        <span
-          class="removeBtn"
-          type="button"
-          @click="removeTodo(todoItem, index)"
-        >
-          <font-awesome-icon :icon="['fas', 'trash']" aria-hidden="true" />
-        </span>
-      </li>
-    </transition-group>
-  </section>
+  <div class="listContainer">
+    <div class="tapContainer">
+      <todo-tap v-bind:propsdata="propsdata" @removeTodo="removeTodo" />
+    </div>
+    <div class="tapContainer">2</div>
+    <div class="tapContainer">3</div>
+  </div>
 </template>
 
 <script>
+import TodoTap from "../molecules/TodoTap.vue";
+
 export default {
   props: ["propsdata"],
   methods: {
@@ -32,44 +18,25 @@ export default {
       this.$emit("removeTodo", todoItem, index);
     },
   },
+  components: {
+    TodoTap,
+  },
 };
 </script>
 
 <style scoped>
-ul {
-  list-style-type: none;
-  padding-left: 0;
-  margin-top: 0;
-  text-align: left;
+.listContainer {
+  display: grid;
+  height: 700px;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-top: 45px;
+  justify-items: center;
 }
-li {
-  display: flex;
-  min-height: 50px;
-  height: 50px;
-  line-height: 50px;
-  margin: 0.5rem 0;
-  padding: 0 0.9rem;
-  background: white;
-  border: 5px solid #6478fb;
-  vertical-align: middle;
-  align-items: center;
-  justify-content: center;
-}
-.checkBtn {
-  color: #62acde;
-  margin-right: 5px;
-}
-.removeBtn {
-  margin-left: auto;
-  color: #de4343;
-}
-.list-enter-active,
-.list-leave-active {
-  transition: all 1s;
-}
-.list-enver,
-.list-leave-to {
-  opacity: 0;
-  transform: translateY(30px);
+.tapContainer {
+  background: #383838;
+  opacity: 0.5;
+  height: auto;
+  width: 90%;
+  border-radius: 20px;
 }
 </style>
